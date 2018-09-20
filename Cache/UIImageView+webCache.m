@@ -14,20 +14,21 @@
 - (void)setImageWithURL:(NSURL *)url
 {
     YJCache *cache = (YJCache *)[[self class] shareCacheImage];
-    UIImage *existImage = [cache cachedImageForRequest:[NSURLRequest requestWithURL:url]];
-    if(existImage)
-    {
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    UIImage *existImage = [cache cachedImageForRequest:request];
+    if(existImage){
         self.image = existImage;
         return;
     }
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        
         UIImage *imageData = [[UIImage alloc] initWithData:[NSData dataWithContentsOfURL:url]];
         if(imageData)
         {
-            [cache cachedImageForRequest:[NSURLRequest requestWithURL:url]];
+            [cache cacheImage:imageData forRequest:request];
         }
-        self.image = imageData;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.image = [cache cachedImageForRequest:request];
+        });
     });
 }
 
@@ -35,8 +36,8 @@
     static YJCache *cache = nil;
     static dispatch_once_t once;
     dispatch_once(&once, ^{
-       
         cache = [[YJCache alloc] init];
+        //内存警告 清除内存
         [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidReceiveMemoryWarningNotification object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
             [cache removeAllObjects];
         }];

@@ -29,8 +29,8 @@
 - (void)loadImage
 {
     //测试url
-    [self.imageView setImageWithURL:[NSURL URLWithString:@"http://192.168.0.211/photo/2017031321/59d9ff24-ad8e-45ef-97c5-159e2ce569c8.jpg"]];
-    [self.imageView2 setImageWithURL:[NSURL URLWithString:@"http://192.168.0.211/photo/2017031321/59d9ff24-ad8e-45ef-97c5-159e2ce569c8.jpg"]];
+    [self.imageView setImageWithURL:[NSURL URLWithString:@"http://img.zcool.cn/community/0117e2571b8b246ac72538120dd8a4.jpg@1280w_1l_2o_100sh.jpg"]];
+    [self.imageView2 setImageWithURL:[NSURL URLWithString:@"http://pic2.52pk.com/files/160216/5329500_160443_1.png"]];
 }
 /*
 #pragma mark - Navigation
